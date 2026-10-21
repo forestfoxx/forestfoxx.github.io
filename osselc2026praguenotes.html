@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://forestfoxx.github.io/rss.xml"
+      title="RSS feed for https://forestfoxx.github.io/">
+<title>Open Source Summit + Embedded Linux Conference Europe 2026 (Prague) report and presentation notes</title>
+<meta name="author" content="forestfoxx">
+<meta name="referrer" content="no-referrer">
+<link href= "static/style.css" rel="stylesheet" type="text/css" />
+<link href="static/favicon.ico" rel="icon" />
+</head>
+<body>
+<div id="preamble" class="status"><div class="header">
+  <div class="sitelinks">
+    <a href="https://forestfoxx.github.io/org-blog/index.html">Home</a>
+    |
+    <a href="https://forestfoxx.github.io/org-blog/archive.html">All Posts</a>
+  </div>
+</div>
+</div>
+<div id="content">
+<div class="post-date">22 Oct 2026</div><h1 class="post-title"><a href="https://forestfoxx.github.io/osselc2026praguenotes.html">Open Source Summit + Embedded Linux Conference Europe 2026 (Prague) report and presentation notes</a></h1>
+<p>
+Finally I sufficiently edited my notes for a little belated post on the Open Source Summit + Embedded Linux Conference Europe 2026 in Prague.
+I was quite excited to attend as it was my first conference/summit, and it certainly delivered. Organizationally, it was handled very well, and there were always plenty of
+presentations, booths, and activities to attend. The schedule was also planned in such a way that coming up to the booths to talk about projects (which ranged from
+things like Flatcar container Linux to RISC-V automotive projects and many, many more across the entire open source and embedded space) in-between some talks and during breaks was
+generally feasible, so over the course of the several-day conference you could visit most if not all of them.
+</p>
+
+<p>
+Below I will provide a non-exhaustive list of talks I attended with corresponding notes. I didn't write notes for all of the talks and keynotes I attended, so
+this list is partial, yet still mostly complete.
+</p>
+
+<p>
+<b><b>October 7th</b></b>
+</p>
+
+<p>
+<b><b>Triaging CVEs for the Linux Kernel - Christoph Steiger &amp; Negar Masoudifar, Siemens AG</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/79/triaging-cves-for-the-linux-kernel.pdf">https://hosted-files.sched.co/osselceu2026/79/triaging-cves-for-the-linux-kernel.pdf</a>
+</p>
+<ul class="org-ul">
+<li>rising number of cves in 2026 (in part due to agentic explosion)</li>
+<li>on average every bug once per 7 days in 2026</li>
+<li>updates not always possible (espesially in embedded with various ctrict certifications)</li>
+<li>maintaining your own kernel fork is too much effort, many companies tried it, many abandoned the idea</li>
+<li>LTS is the way to go for the most part</li>
+<li>presented tool: kernel-cve-triage</li>
+<li>check CVE commit and fixing commit in version history</li>
+<li>find affected config opts with kmax</li>
+</ul>
+
+<p>
+If you’re not building the file and you never build it – it doesn’t affect you – around 5-10% functionality of the kernel may actually be used in the build
+(personal note: similar to how our usage of brain capabilities is limited compared to its potential).
+</p>
+
+<ul class="org-ul">
+<li>kmax helps determing from a file which config options we need to set</li>
+<li>the presented tool takes 1-2 secs per CVE, mostly due to expensive git history lookups</li>
+
+<li>next: comparison with yocto CVE check</li>
+
+<li>yocto starting point: CVE -&gt; check whether version is affected or not -&gt; build the kernel, extract include files from debuginfo during building, check if affected files are built</li>
+
+<li>minor difference: yocto needs to build the kernel to extract info, while the presented tool just needs the source tree to determine the affected files and configs, no need for building
+empirical comparison or same kernel version and same config:</li>
+
+<li>patched and unpatched classification: tools are similar</li>
+<li>main difference: ignored category</li>
+
+<li>reasons: file determination can fail</li>
+<li>kmax sometimes fails to determine the relevant config</li>
+</ul>
+
+<p>
+Shown approaches filter around 80 percent of CVEs, likely it’s the ceiling possible. Auhors suggest adding affected Kconfig in vulnerability reports (kernel CVEs),
+use LTS and SLTS (Super LTS), join communities like CIP.
+</p>
+
+<p>
+Relevant links:
+<a href="https://cip-project.org/">https://cip-project.org/</a>
+<a href="https://gitlab.com/cip-project">https://gitlab.com/cip-project</a>
+</p>
+
+
+<p>
+<b><b>Reproducible Embedded Linux Testing From Laptop To CI To Scale - Anders Roxell, Linaro</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/32/Reproducible%20embedded%20linux%20testing.pdf">https://hosted-files.sched.co/osselceu2026/32/Reproducible%20embedded%20linux%20testing.pdf</a>
+ARM CCA on QEMU * OP-TEE on QEMU and RPI 4
+</p>
+
+<ul class="org-ul">
+<li>OP-TEE and CCA are not one project</li>
+<li>OP-TEE: TF-A, OP-TEE, u-boot, linux …</li>
+<li>CCA:  TF-A, TF-RMM, EDK2, Linux/kvm, qemu, guest/rootfs</li>
+</ul>
+<p>
+Then there is FVP (ARM virtualization platform)
+</p>
+
+<p>
+Overall: tuxmake (linux( tuxfirmware (tf-a, op-tee, userspace) tuxuboot (u-boot) shrinkwrap (CCA) → artifacts → tuxrun (qemu, fvp, board)
+<a href="https://github.com/kernelci/tuxmake">https://github.com/kernelci/tuxmake</a>
+</p>
+
+<p>
+local: python command, local/url files, build/test locally:
+cloud: yaml…
+</p>
+
+<p>
+Overall I felt like the talk didn't really get its point across (at least to me) and was a bit confusing with its pacing. It ended 20 mins before schedule with no questions so
+maybe it's not just me who was a bit bamboozled :)
+</p>
+
+
+<p>
+<b><b>Keynote: Open Source at a Crossroads: Geopolitics, Sovereignty, and the Fight to Stay Open - Nithya Ruff, Chair, Linux Foundation Board &amp; Johan Linaker, Senior Researcher, RISE Research Institutes of Sweden &amp; Adjunct Assistant Professor, Lund University</b></b>
+</p>
+
+<p>
+Central point: open source enables govs to collaborate even with rivalry present; industry learned the lesson: open source their own code,
+co-invest in shared projects and solve problems. Should govs do the same?
+</p>
+
+<p>
+In the end there was a list of sovereign AI projects by country (not exhaustive of course): Teuken, llm-jp, openeurollm, aperitus, sea-lion.
+</p>
+
+<p>
+Personally I think collaboration would of course ease up tensions, but we should account for the fact that some govs may use others' open source advancements for their own malicious
+goals while not really sharing their own achievents. So there is a bit of a game-theoretic problem here.
+</p>
+
+<p>
+<b><b>What Is Linux Doing With My RAM? - Vlastimil Babka, SUSE Labs</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/1e/vbabka-linux-memory.pdf">https://hosted-files.sched.co/osselceu2026/1e/vbabka-linux-memory.pdf</a>
+</p>
+
+<p>
+<b><b>Off the Laptop, Into Production: An Open Source Stack for AI Agents on Kubernetes - Brian Hammons &amp; Nirmal Mehta, Amazon Web Services</b></b>
+</p>
+
+<p>
+Topic: how to run at scale prod agents
+</p>
+
+<p>
+The presenters distinguish between outer/inner loop and related tooling
+</p>
+
+<p>
+Outer: 
+infra (shared): k8s, VPC, Karpenter, ArgoCD, ACK (AWS Controllers for Kubernetes)
+</p>
+
+<p>
+outer (how you operate):
+build: gitlab /ci/cd/registry
+</p>
+
+<p>
+deploy/dispatch: argo for gitops, karpenter for autoscale
+observability/evaluation: langfuse 
+memory: milvus for vector db
+</p>
+
+<p>
+inner loop: agent lifecycle loop
+request sandbox -&gt; network policy -&gt; identity bound -&gt; harness config -&gt; pod executes -&gt; observe&amp;store -&gt; shutdown/pause/restart
+</p>
+
+<p>
+projects for :1) agent orchestrator 2) inference gateway, 3) memory&amp;context 4) sandbox 5) identity 6) network policy
+</p>
+
+<p>
+<b><b>Making the Kernel Chat: How To Get Debug Output - Richard Weinberger, sigma star gmbh</b></b>
+Interesting parallel talk that I would have liked to attend as well
+<a href="https://hosted-files.sched.co/osselceu2026/85/kernel-output-debugging.pdf">https://hosted-files.sched.co/osselceu2026/85/kernel-output-debugging.pdf</a>
+</p>
+
+
+
+<p>
+<b><b>A Surprisingly Hard Question: How Much Memory Does My System Use? - Richard Weinberger, sigma star gmbh</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/5a/linux-ramusage_oss2026.pdf">https://hosted-files.sched.co/osselceu2026/5a/linux-ramusage_oss2026.pdf</a>
+This talk was a little bit more practical/workshop-ish with various tools and commands presented to learn about Linux memory usage (which is a huge topic).
+No, seriously, it's HUGE:
+<a href="https://nostarch.com/linux-memory-manager">https://nostarch.com/linux-memory-manager</a>
+What you definitely need to remember though is the difference between SLAB, SLOB and SLUB :p
+</p>
+
+<p>
+Also useful-to-know about 
+<a href="https://docs.kernel.org/mm/damon/index.html">https://docs.kernel.org/mm/damon/index.html</a>
+There was a related talk (I didn't attend):
+<a href="https://hosted-files.sched.co/osselceu2026/67/damon_howto.pdf">https://hosted-files.sched.co/osselceu2026/67/damon_howto.pdf</a>
+</p>
+
+<p>
+<b><b>Kata at Scale: The Hidden Cost of Running VMs Behind Every Container - Kavitha Daula &amp; Nigel Douglas, Edera</b></b>
+<a href="https://osselceu2026.sched.com/event/2RaXe/kata-at-scale-the-hidden-cost-of-running-vms-behind-every-container-kavitha-daula-nigel-douglas-edera">https://osselceu2026.sched.com/event/2RaXe/kata-at-scale-the-hidden-cost-of-running-vms-behind-every-container-kavitha-daula-nigel-douglas-edera</a>
+</p>
+
+<p>
+Edera is supposedly an alternative to Kata as a full-fledged platform. The presenters describe their experience and troubles with kata containers.
+Specifically, kata adds lots of complexity due to its architecture compared to “just containers" (true enough).
+You now have to manage a ton of stuff regarding the guest kernel – it’s part of the workload. Performance, modules, CVEs, etc.
+That is, the kernel is no longer infrastructure, it’s production artifact. If you add confidential containers (note: e.g. CoCo, EdgelessSystems Contrast, etc)
+to that, it becomes even more complex.
+</p>
+
+<p>
+Some personal note: while the listed problems are true, I don't think they're necessarily a strong enough argument against Kata - I mean, everything today is so complex,
+so what's another convoluted project to manage, right? Although I can actually add even more examples that make Kata harder to use - for instance, while with "just containers"
+like Docker, Podman, cri-o, etc we have a rather established software stack for monitoring, tracing, observability of containers, we don't really have that with Kata,
+and what we do have is very limited compared to the mainstream (same problem exists with plenty of other heterodox approaches to containers, like gVisor, firecracker-containerd and so on,
+which happened to be one of the central topics of my Bachelor thesis, so I was pretty curious about the talk and shared production experience). In other words, in addition to managing
+Kata, we will also need to (largely manually) do a lot of instrumentation of existing tooling (whether eBPF-based or not) due to the idiosyncracies of Kata's architecture,
+or write our own tooling from scratch just to reproduce a traditional monitoring/observability/tracing stack with Kata - which is in addition to managing the lifecycle of Kata itself.
+Still, I feel like Kata and projects building on it, like confidential containers, offer benefits that are just too exciting to be outweighted by the added layers of complexity.
+</p>
+
+
+<p>
+<b><b>Embracing Service-Oriented Connectivity Across OpenStack and Kubernetes - Mitsuhiro Tanino &amp; Rei Shimizu, LY Corporation</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/23/OSS_EU2026_Embracing_Service-Oriented_Connectivity.pdf">https://hosted-files.sched.co/osselceu2026/23/OSS_EU2026_Embracing_Service-Oriented_Connectivity.pdf</a>
+</p>
+
+<p>
+Presenters give on overview of their Flava Openstack-based cloud platform
+</p>
+
+<p>
+athenz = authN + authZ
+<a href="https://github.com/AthenZ/athenz">https://github.com/AthenZ/athenz</a>
+configuration repository
+<a href="https://github.com/line/centraldogma">https://github.com/line/centraldogma</a>
+Microservice framework
+<a href="https://armeria.dev">https://armeria.dev</a>
+They further describe their custom Service Connect implementation with plenty of detail
+</p>
+
+<p>
+In their view, fewer boots is better than having hidden failures in half-working VMs (regarding their NOVA-based solution based on Openstack)
+</p>
+
+<p>
+<b><b>Life Finds a Way, Sandboxed Agents, Observable Verdicts - Henrik Rexed, Dynatrace</b></b>
+<a href="https://osselceu2026.sched.com/event/2RaYc/life-finds-a-way-sandboxed-agents-observable-verdicts-henrik-rexed-dynatrace">https://osselceu2026.sched.com/event/2RaYc/life-finds-a-way-sandboxed-agents-observable-verdicts-henrik-rexed-dynatrace</a>
+</p>
+
+<p>
+Setting the stage: intro to some CVEs related to deepseek and flowise;
+another 2 CVEs related to lack of authentication (regarding ryflow and 9r)
+k8s agentsandbox operator – scale and isolate agents in the cluster
+<a href="https://github.com/kubernetes-sigs/agent-sandbox">https://github.com/kubernetes-sigs/agent-sandbox</a>
+Available runtimeclasses: gvisor, kata, firecracker, runc (default)
+Demo with openclaw, tetragon, other tools
+</p>
+
+<p>
+Results:
+runc host syscalls: 6000 in 30 mins
+gVisor: 996
+</p>
+
+<p>
+<b><b>Sandlock: Rootless and Containerless Confinement for AI Agents - Cong Wang, Multikernel Technologies</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/39/sandlock-oss-eu.pdf">https://hosted-files.sched.co/osselceu2026/39/sandlock-oss-eu.pdf</a>
+</p>
+
+<p>
+Problem statement: agents do many commands which need various permissions
+</p>
+
+<p>
+sandlock wraps every command with its containment mechanism
+sandlock: rootless, containerless, cgroup-less, based on landlock + seccomp-bpf + seccomp user notifications
+<a href="https://github.com/multikernel/sandlock">https://github.com/multikernel/sandlock</a>
+</p>
+
+
+<p>
+<b>*October 8th</b>
+</p>
+
+<p>
+<b><b>When the Kernel Writes Its Own Code: Debugging Runtime-Generated Instructions - Alexis Lothoré, Bootlin</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/e9/lothore-ebpf-debugging.pdf">https://hosted-files.sched.co/osselceu2026/e9/lothore-ebpf-debugging.pdf</a>
+</p>
+
+<p>
+Talk on debugging the kernel with gdb (note: interesting to know why pwndbg or GEF were not considered as alternatives to fine-tuning vanilla gdb)
+Useful tool:
+<a href="https://github.com/arighi/virtme-ng">https://github.com/arighi/virtme-ng</a>
+primer on KASAN, shadow memory
+memory granule (8 bytes) and corresponding shadow memory: 1:1 mapping
+then an example of custom gdb function to investigate shadow memory related to memory region
+Misc: gdb TUI!  (C-x-C-a, TUI view is customizable, C-x s enters single-key mode)
+</p>
+
+<p>
+problem: runtime-generated code by example of eBPF programs. 
+Also: increasingly good eBPF support in GCC
+See e.g.:
+<a href="https://lwn.net/Articles/1071973/">https://lwn.net/Articles/1071973/</a>
+</p>
+
+
+<p>
+Side note: Bootlin has excellent training slides available for other topics that I highly recommend to check out
+<a href="https://bootlin.com/training/">https://bootlin.com/training/</a>
+</p>
+
+<p>
+<b><b>Own Your Stack: Sovereign Kubernetes From Bare Metal To Fleet - Sunnatillo Samadov, Ericsson &amp; Bharath N R, Mirantis Inc.</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/16/Own%20Your%20Stack%20Sovereign%20Kubernetes%20from%20Bare%20Metal%20to%20Fleet%20-%20Bharath%2C%20Sunnatillo.pdf">https://hosted-files.sched.co/osselceu2026/16/Own%20Your%20Stack%20Sovereign%20Kubernetes%20from%20Bare%20Metal%20to%20Fleet%20-%20Bharath%2C%20Sunnatillo.pdf</a>
+</p>
+
+<p>
+Sovereign AI infra: motivation
+Challenges: server provisioning, cluster lifecycle (manage them without cloud API), fleet consistency, drift, no lock-in (modular open-source)
+k8s: GPU allocation with DRA (dynamic resource allocation)
+<a href="https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu">https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu</a>
+<a href="https://github.com/kubernetes-sigs/dra-example-driver">https://github.com/kubernetes-sigs/dra-example-driver</a>
+<a href="https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/">https://kubernetes.io/blog/2025/09/01/kubernetes-v1-34-dra-updates/</a>
+Suggested stack: k0rdent, cluster API, metal3 + baremetal GPU servers and AI workloads
+</p>
+
+<p>
+k0rdent has components like cluster manager (built on cluster api, flux, k0smotron), state manager (project sveltos as a base);
+k0rdent observability and finops (based on opentelemetry, victoriametrics, opencost)
+</p>
+
+<p>
+Primer on baremetalhost kind yaml file with various fields like bootMode: UEFI and so on
+</p>
+
+<p>
+tradeoffs of your own stack: hardware operations,  no managed services, slower scale-out, planned capacity
+</p>
+
+
+<p>
+<b><b>Beyond Strace: Syscall Analysis the Wireshark Way - Roland Knall, Wireshark Foundation</b></b>
+</p>
+
+<p>
+Talk on Stratoshark
+It finally has a website! When I encountered this project it was just in a repo. The site reportedly went live just before the talk :)
+<a href="https://stratoshark.org/">https://stratoshark.org/</a>
+One thing briefly mentioned during the talk regarding comparison with other tools: strace can do fault injection! I didn't know this:
+<a href="https://archive.fosdem.org/2017/schedule/event/failing_strace/attachments/slides/1630/export/events/attachments/failing_strace/slides/1630/strace_fosdem2017_ta_slides.pdf">https://archive.fosdem.org/2017/schedule/event/failing_strace/attachments/slides/1630/export/events/attachments/failing_strace/slides/1630/strace_fosdem2017_ta_slides.pdf</a>
+</p>
+
+
+<p>
+<b><b>Rsinit &#x2013; A Tiny Initramfs Toolbox for Embedded Systems - Michael Olbrich, Pengutronix</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/c6/rsinit.pdf">https://hosted-files.sched.co/osselceu2026/c6/rsinit.pdf</a>
+<a href="https://github.com/pengutronix/rsinit">https://github.com/pengutronix/rsinit</a>
+</p>
+
+<p>
+<b><b>LibreCar: Android Auto on Mobile Linux - Petr Hodina, SolderChef</b></b>
+<a href="https://osselceu2026.sched.com/event/2Racg/librecar-android-auto-on-mobile-linux-petr-hodina-solderchef">https://osselceu2026.sched.com/event/2Racg/librecar-android-auto-on-mobile-linux-petr-hodina-solderchef</a>
+<a href="https://gitlab.com/solderchef/libreauto">https://gitlab.com/solderchef/libreauto</a>
+Some related/mentioned projects:
+<a href="https://github.com/vectorgrp">https://github.com/vectorgrp</a>
+<a href="https://github.com/f-io">https://github.com/f-io</a>
+<a href="https://github.com/mobile-nixos/mobile-nixos">https://github.com/mobile-nixos/mobile-nixos</a>
+</p>
+
+<p>
+<b><b>Using the Linux Tracing Infrastructure and eBPF for Latency Analysis - Jan Altenberg, Open Source Automation Development Lab (OSADL) eG</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/14/OSSEU_2026-Latency_analysis-Altenberg.pdf">https://hosted-files.sched.co/osselceu2026/14/OSSEU_2026-Latency_analysis-Altenberg.pdf</a>
+</p>
+
+<p>
+<b><b>Caching in the Storage Path - How To Gain Performance Without Loosing Data - Werner Fischer, Thomas-Krenn.AG</b></b>
+(wanted to attend this talk but in the end went to another one mentioned next)
+<a href="https://hosted-files.sched.co/osselceu2026/13/OSS-2026-Werner-Fischer-Caching-in-the-Storage-Path-2026-10-08-1600.pdf">https://hosted-files.sched.co/osselceu2026/13/OSS-2026-Werner-Fischer-Caching-in-the-Storage-Path-2026-10-08-1600.pdf</a>
+</p>
+
+<p>
+<b>*Your Agent Did What? Forensic Observability for Systems That Don’t Leave Obvious Footprints - Adriana Villela, Dynatrace &amp; Kasper Borg Nissen, Dash0 *</b>
+<a href="https://osselceu2026.sched.com/event/2Rafg/your-agent-did-what-forensic-observability-for-systems-that-dont-leave-obvious-footprints-adriana-villela-dynatrace-kasper-borg-nissen-dash0">https://osselceu2026.sched.com/event/2Rafg/your-agent-did-what-forensic-observability-for-systems-that-dont-leave-obvious-footprints-adriana-villela-dynatrace-kasper-borg-nissen-dash0</a>
+Lots of useful projects mentioned, including <a href="https://github.com/perses/perses">https://github.com/perses/perses</a> (waiting for the slides for other links).
+Though I have a feeling I should have gone to the previous talk (that track was more technical-ish in terms of details)
+</p>
+
+<p>
+<b><b>October 9th</b></b>
+</p>
+
+<p>
+On this day, the first 4 keynote speakers were fortunate enough to be placed before Linus Torvalds so the congress hall was packed full :)
+In parallel: another worthwhile talk by a Bootlin guy, would have liked to attend but I like that Bootlin's slides are always super informative
+</p>
+
+<p>
+<b><b>XDP &amp; XSK Support From a Linux Driver Standpoint - Théo Lebrun, Bootlin</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/01/tleb-xdp.pdf">https://hosted-files.sched.co/osselceu2026/01/tleb-xdp.pdf</a>
+</p>
+
+<p>
+<b><b>Keynote: Linus Torvalds, Creator of Linux &amp; Git, in Conversation with Dirk Hohndel, Head of Ericsson Software Technology, Ericsson</b></b>
+A comfy talk about all kinds of topics, from pre-Git times and version control systems to (closer to the end) AI, <a href="https://github.com/sashiko-dev/sashiko">sashiko</a> and vibecoding (surprised that LT is softer on that now, at least
+for personal exploratory projects).
+Seeing Linux Torvalds in person for the first time was kinda similar to seeing Richard Stallman many years ago - they both don't really care
+about publicity and fame, and act fairly humbly. I like that.
+</p>
+
+<p>
+<b><b>A Native API for Linux Systems With Systemd + Varlink - Lennart Poettering, Amutable</b></b>
+<a href="https://osselceu2026.sched.com/event/2RaXG/a-native-api-for-linux-systems-with-systemd-+-varlink-lennart-poettering-amutable">https://osselceu2026.sched.com/event/2RaXG/a-native-api-for-linux-systems-with-systemd-+-varlink-lennart-poettering-amutable</a>
+Lennart Poettering had two presentations in a row, and he surely <span class="underline"><span class="underline">talks fast</span></span>. Among other things, he announced a desire to eventually switch to Varlink from D-Bus.
+</p>
+
+<p>
+<b><b>The Little-Known Mechanism for Securely Parameterizing Systemd Services - Lennart Poettering, Amutable</b></b>
+<a href="https://osselceu2026.sched.com/event/2RaYB/the-little-known-mechanism-for-securely-parameterizing-systemd-services-lennart-poettering-amutable">https://osselceu2026.sched.com/event/2RaYB/the-little-known-mechanism-for-securely-parameterizing-systemd-services-lennart-poettering-amutable</a>
+Systemd-credentials talk
+</p>
+
+<p>
+<b><b>Keeping Track of Resources in the Kernel - Overview and Pitfalls of Resource Management Mechanisms - Bartosz Golaszewski, Qualcomm</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/0c/OSS%202026%20Prague.pdf">https://hosted-files.sched.co/osselceu2026/0c/OSS%202026%20Prague.pdf</a>
+Lots of talking about devices and devres
+</p>
+
+<p>
+<b><b>Workshop: Linux Containers In (Less Than) 100 Lines of Shell - Michael Kerrisk, man7.org Training and Consulting</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/ff/containers-in-100-lines-of-shell--OSS.eu-2026--Kerrisk-man7.org.pdf">https://hosted-files.sched.co/osselceu2026/ff/containers-in-100-lines-of-shell--OSS.eu-2026--Kerrisk-man7.org.pdf</a>
+Somehow this talk felt very comfy, I guess due to the didactic talent of Michael Kerrisk. Great to see some of the things I know in such a gentle way, while also providing new
+interesting details that I didn't know about (although he didn't have time to finish all slides despite the session being so long :))
+</p>
+
+<p>
+<b><b>Who Watches the Watcher? Hardening eBPF in Production Security Deployments - Hanshal Mehta, Independent</b></b>
+<a href="https://osselceu2026.sched.com/event/2RaiF/who-watches-the-watcher-hardening-ebpf-in-production-security-deployments-hanshal-mehta-independent">https://osselceu2026.sched.com/event/2RaiF/who-watches-the-watcher-hardening-ebpf-in-production-security-deployments-hanshal-mehta-independent</a>
+I was curious to see a talk by someone also interested in eBPF (in)security shenanigans (I did that a lot during my Bachelor thesis), although this talk ended up
+being more about some specific vulnerabilities in eBPF-based tools while not going into that much detail about eBPF itself and its (in)security, which is quite
+a growing (though still relatively niche) field of research both in academia (e.g. securing eBPF verifier or providing alternatives to it)
+and industry (e.g. studying eBPF-based rootkits in the wild). Still, it was interesting to see some of the issues the presenter found in tools like Tetragon.
+</p>
+
+<p>
+<b><b>A Surprisingly Hard Question: How Much Memory Does My System Use? - Richard Weinberger, sigma star gmbh</b></b>
+<a href="https://hosted-files.sched.co/osselceu2026/5a/linux-ramusage_oss2026.pdf">https://hosted-files.sched.co/osselceu2026/5a/linux-ramusage_oss2026.pdf</a>
+Another practical workshop-ish talk by the presenter with useful insights on troubleshooting memory consumption on Linux.
+</p>
+
+<p>
+Well, that was a long post and a good memory. Hopefully, I am going to provide similar posts about future conferences I attend as well (which I certainly would like to do).
+</p>
+<div class="taglist"></div></div>
+<div id="postamble" class="status">Created by <a href="https://github.com/bastibe/org-static-blog/">Org Static Blog</a>
+</div>
+</body>
+</html>
